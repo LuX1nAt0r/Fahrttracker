@@ -12,6 +12,9 @@ interface DriveDao {
     @Query("SELECT * FROM drive")
     fun getAllDrives()
 
+    @Query("SELECT * FROM DRIVE WHERE id = :id")
+    fun getDriveById(id: Int)
+
     @Insert
     fun insertFahrt(fahrt: Drive)
 
