@@ -1,24 +1,22 @@
 package com.llprdctn.fahrttracker.data.dao
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.lifecycle.LiveData
+import androidx.room.*
 import com.llprdctn.fahrttracker.data.entities.Drive
 
 @Dao
 interface DriveDao {
 
     @Query("SELECT * FROM drive")
-    fun getAllDrives()
+    fun getAllDrives(): LiveData<Drive>
 
-    @Query("SELECT * FROM DRIVE WHERE id = :id")
-    fun getDriveById(id: Int)
+    //@Query("SELECT * FROM DRIVE WHERE id = :id")
+    //suspend fun getDriveById(id: Int): Drive
 
-    @Insert
-    fun insertFahrt(fahrt: Drive)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertFahrt(fahrt: Drive)
 
     @Delete
-    fun deleteFahrt(fahrt: Drive)
+    suspend fun deleteFahrt(fahrt: Drive)
 
 }

@@ -5,8 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "drive")
 data class Drive(
+    val date: String,
+    val mitDriver: List<String>,
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
-    val date: Long,
-    val mitFahrer: List<Int>
+    val id: Int
 )

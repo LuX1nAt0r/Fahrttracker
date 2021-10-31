@@ -19,5 +19,13 @@ object AppModule {
     @Singleton
     fun provideDatabase(
         @ApplicationContext context: Context
-    ) = Room.databaseBuilder(context, Database::class.java, DATABASE_NAME)
+    ) = Room.databaseBuilder(context, Database::class.java, DATABASE_NAME).build()
+
+    @Singleton
+    @Provides
+    fun provideDriveDao(db: Database) = db.driverDao()
+
+    @Singleton
+    @Provides
+    fun provideMitFahrerDao(db: Database) = db.mitFahrerDao()
 }

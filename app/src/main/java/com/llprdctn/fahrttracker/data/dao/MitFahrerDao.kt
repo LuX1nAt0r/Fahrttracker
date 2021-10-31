@@ -1,5 +1,6 @@
 package com.llprdctn.fahrttracker.data.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -10,14 +11,14 @@ import com.llprdctn.fahrttracker.data.entities.MitFahrer
 interface MitFahrerDao {
 
     @Insert
-    fun insertMitFahrer(mitFahrer: MitFahrer)
+    suspend fun insertMitFahrer(mitFahrer: MitFahrer)
 
     @Delete
-    fun deleteMitFahrer(mitFahrer: MitFahrer)
+    suspend fun deleteMitFahrer(mitFahrer: MitFahrer)
 
     @Query("SELECT * FROM mitFahrer")
-    fun getAllMitFahrer()
+    fun getAllMitFahrer(): LiveData<MitFahrer>
 
-    @Query("SELECT * FROM mitFahrer WHERE id = :id")
-    fun getMitFahrerByID(id: Int)
+    //@Query("SELECT * FROM mitFahrer WHERE id = :id")
+    //suspend fun getMitFahrerByID(id: Int)
 }
