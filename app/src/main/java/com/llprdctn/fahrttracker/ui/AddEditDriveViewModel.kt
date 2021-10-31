@@ -1,5 +1,6 @@
 package com.llprdctn.fahrttracker.ui
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.llprdctn.fahrttracker.repositories.DriverRepository
@@ -13,6 +14,6 @@ public class AddEditDriveViewModel @Inject constructor(
 
 
 
-    val currentDate = MutableLiveData<String>(null)
+    val currentDate = MutableLiveData<String>("12")
 
 }
