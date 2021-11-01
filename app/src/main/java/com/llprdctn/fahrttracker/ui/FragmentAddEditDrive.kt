@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.google.android.material.chip.Chip
 import com.llprdctn.fahrttracker.R
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_add_edit_drive.*
+import timber.log.Timber
 import java.util.*
 
 @AndroidEntryPoint
@@ -23,22 +25,47 @@ class FragmentAddEditDrive: Fragment(R.layout.fragment_add_edit_drive) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        tvTest.text = "$dayOfMonth.$month.$year"
+        val currentDate = "$dayOfMonth.$month.$year"
+        tvTest.text = currentDate
         tvTest.setOnClickListener {
-            showDatePickerDialog(view)
+            showDatePickerDialog()
         }
 
+        val names = arrayOf("Luisa", "Lukas")
+
+        names.forEach {
+            cgMitFahrer.addView(Chip(requireContext()).apply {
+                id = View.generateViewId()
+                text = it
+                isCheckable = true
+
+            })
+        }
+
+        cgMitFahrer.setOnCheckedChangeListener { group, checkedId ->
+
+        }
+
+        fabSaveFahrt.setOnClickListener {
+            Timber.i(cgMitFahrer.checkedChipIds.toString())
+
+            for (i in 0 until cgMitFahrer.checkedChipIds.size-1) {
+
+
+            }
+            //cgMitFahrer.checkedChipIds
+        }
 
 
 
     }
 
-    private fun showDatePickerDialog(v:View) {
-
-
+    private fun showDatePickerDialog() {
         DatePickerDialog(requireContext(),
             { _, year, month, dayOfMonth ->
-                tvTest.text = "$dayOfMonth.$month.$year"
+                //OnDateSetListener
+                val selectedDate = "$dayOfMonth.$month.$year"
+                tvTest.text = selectedDate
             },
             year,
             month,
