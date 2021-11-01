@@ -3,11 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/fragmentAddEditDrive">
+    app:startDestination="@id/fragmentAddEditMitfahrer">
 
     <fragment
         tools:layout="@layout/fragment_add_edit_drive"
         android:id="@+id/fragmentAddEditDrive"
-        android:name="com.llprdctn.fahrttracker.ui.FragmentAddEditDrive"
+        android:name="com.llprdctn.fahrttracker.ui.addEditDrive.FragmentAddEditDrive"
         android:label="FragmentAddEditDrive" />
+    <fragment
+        android:id="@+id/fragmentAddEditMitfahrer"
+        android:name="com.llprdctn.fahrttracker.ui.addEditMitfahrer.FragmentAddEditMitfahrer"
+        android:label="FragmentAddEditMitfahrer"
+        tools:layout="@layout/fragment_add_edit_mitfahrer"/>
 </navigation>

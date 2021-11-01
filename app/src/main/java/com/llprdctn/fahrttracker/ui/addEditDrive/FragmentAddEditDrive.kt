@@ -1,4 +1,4 @@
-package com.llprdctn.fahrttracker.ui
+package com.llprdctn.fahrttracker.ui.addEditDrive
 
 import android.app.DatePickerDialog
 import android.os.Bundle
@@ -10,7 +10,6 @@ import com.llprdctn.fahrttracker.R
 import com.llprdctn.fahrttracker.data.entities.Drive
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_add_edit_drive.*
-import timber.log.Timber
 import java.util.*
 
 @AndroidEntryPoint
