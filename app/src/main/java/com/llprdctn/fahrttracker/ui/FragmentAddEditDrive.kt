@@ -45,15 +45,18 @@ class FragmentAddEditDrive: Fragment(R.layout.fragment_add_edit_drive) {
         cgMitFahrer.setOnCheckedChangeListener { group, checkedId ->
 
         }
-
         fabSaveFahrt.setOnClickListener {
             Timber.i(cgMitFahrer.checkedChipIds.toString())
 
-            for (i in 0 until cgMitFahrer.checkedChipIds.size-1) {
 
+            val checkedIDs = cgMitFahrer.checkedChipIds
+            val mitFahrer: MutableList<String> = mutableListOf()
 
+            for (i in 0 until checkedIDs.size) {
+                mitFahrer.add(names[checkedIDs[i]-1])
             }
-            //cgMitFahrer.checkedChipIds
+            Timber.i(mitFahrer.toString())
+
         }
 
 
