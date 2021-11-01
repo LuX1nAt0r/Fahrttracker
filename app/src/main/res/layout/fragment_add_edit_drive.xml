@@ -6,6 +6,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.google.android.material.chip.ChipGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="250dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:singleSelection="true">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/hinFahrt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hinfahrt"
+            android:checkable="true"
+            />
+
+        <com.google.android.material.chip.Chip
+            android:checkable="true"
+            android:id="@+id/rueckFahrt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rückfahrt" />
+
+    </com.google.android.material.chip.ChipGroup>
+
 
     <TextView
         android:id="@+id/tvTest"
@@ -44,7 +71,6 @@
         android:layout_marginBottom="24dp"
         android:src="@drawable/ic_baseline_save_24"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

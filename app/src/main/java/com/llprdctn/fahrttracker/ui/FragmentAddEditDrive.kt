@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.chip.Chip
 import com.llprdctn.fahrttracker.R
+import com.llprdctn.fahrttracker.data.entities.Drive
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_add_edit_drive.*
 import timber.log.Timber
@@ -22,45 +23,52 @@ class FragmentAddEditDrive: Fragment(R.layout.fragment_add_edit_drive) {
     private val month = c.get(Calendar.MONTH)
     private val dayOfMonth = c.get(Calendar.DAY_OF_MONTH)
 
+    //Just for testing
+    private val names = arrayOf("Luisa", "Lukas")
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        hinFahrt.isChecked = true
         val currentDate = "$dayOfMonth.$month.$year"
         tvTest.text = currentDate
         tvTest.setOnClickListener {
             showDatePickerDialog()
         }
 
-        val names = arrayOf("Luisa", "Lukas")
+        createChips()
 
-        names.forEach {
-            cgMitFahrer.addView(Chip(requireContext()).apply {
-                id = View.generateViewId()
-                text = it
-                isCheckable = true
 
-            })
-        }
 
-        cgMitFahrer.setOnCheckedChangeListener { group, checkedId ->
 
-        }
+
+
         fabSaveFahrt.setOnClickListener {
-            Timber.i(cgMitFahrer.checkedChipIds.toString())
+
+            val date = tvTest.text.toString()
+            val checkedNames = getCheckedNames()
+            val hinRueckFahrt = if (hinFahrt.isChecked) "HinFahrt" else "RueckFahrt"
 
 
-            val checkedIDs = cgMitFahrer.checkedChipIds
-            val mitFahrer: MutableList<String> = mutableListOf()
+            val drive = Drive(hinRueckFahrt,date, checkedNames,null)
 
-            for (i in 0 until checkedIDs.size) {
-                mitFahrer.add(names[checkedIDs[i]-1])
-            }
-            Timber.i(mitFahrer.toString())
+
+            viewModel.addDrive(drive)
 
         }
 
 
 
+    }
+
+    private fun getCheckedNames(): List<String> {
+        val checkedIDs = cgMitFahrer.checkedChipIds
+        val mitFahrer: MutableList<String> = mutableListOf()
+
+        for (i in 0 until checkedIDs.size) {
+            mitFahrer.add(names[checkedIDs[i]-1])
+        }
+        return mitFahrer.toList()
     }
 
     private fun showDatePickerDialog() {
@@ -74,6 +82,17 @@ class FragmentAddEditDrive: Fragment(R.layout.fragment_add_edit_drive) {
             month,
             dayOfMonth
         ).show()
+    }
+
+    private fun createChips(){
+        names.forEach {
+            cgMitFahrer.addView(Chip(requireContext()).apply {
+                id = View.generateViewId()
+                text = it
+                isCheckable = true
+
+            })
+        }
     }
 
 
