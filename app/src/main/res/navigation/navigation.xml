@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/fragmentAddEditMitfahrer">
+    app:startDestination="@id/homeFragment">
 
     <fragment
         tools:layout="@layout/fragment_add_edit_drive"
@@ -15,4 +15,16 @@
         android:name="com.llprdctn.fahrttracker.ui.addEditMitfahrer.FragmentAddEditMitfahrer"
         android:label="FragmentAddEditMitfahrer"
         tools:layout="@layout/fragment_add_edit_mitfahrer"/>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.llprdctn.fahrttracker.ui.home.HomeFragment"
+        android:label="HomeFragment"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_fragmentAddEditMitfahrer"
+            app:destination="@id/fragmentAddEditMitfahrer" />
+        <action
+            android:id="@+id/action_homeFragment_to_fragmentAddEditDrive"
+            app:destination="@id/fragmentAddEditDrive" />
+    </fragment>
 </navigation>
