@@ -8,7 +8,7 @@ import com.llprdctn.fahrttracker.data.entities.Drive
 interface DriveDao {
 
     @Query("SELECT * FROM drive")
-    fun getAllDrives(): LiveData<Drive>
+    fun getAllDrives(): LiveData<List<Drive>>
 
     //@Query("SELECT * FROM DRIVE WHERE id = :id")
     //suspend fun getDriveById(id: Int): Drive

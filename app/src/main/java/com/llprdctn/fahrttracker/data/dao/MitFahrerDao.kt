@@ -17,7 +17,7 @@ interface MitFahrerDao {
     suspend fun deleteMitFahrer(mitFahrer: MitFahrer)
 
     @Query("SELECT * FROM mitFahrer")
-    fun getAllMitFahrer(): LiveData<MitFahrer>
+    fun getAllMitFahrer(): LiveData<List<MitFahrer>>
 
     //@Query("SELECT * FROM mitFahrer WHERE id = :id")
     //suspend fun getMitFahrerByID(id: Int)

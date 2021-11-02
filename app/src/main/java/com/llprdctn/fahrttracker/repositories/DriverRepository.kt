@@ -18,7 +18,7 @@ class DriverRepository @Inject constructor(
         driveDao.deleteFahrt(drive)
     }
 
-    fun getAllDrives(): LiveData<Drive>{
+    fun getAllDrives(): LiveData<List<Drive>>{
         return driveDao.getAllDrives()
     }
 

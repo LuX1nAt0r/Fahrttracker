@@ -9,7 +9,7 @@ class MitFahrerRepository @Inject constructor(
     private val mitFahrerDao: MitFahrerDao
 ) {
 
-    fun getAllMitFahrer(): LiveData<MitFahrer> = mitFahrerDao.getAllMitFahrer()
+    fun getAllMitFahrer(): LiveData<List<MitFahrer>> = mitFahrerDao.getAllMitFahrer()
 
     suspend fun insertMitFahrer(mitFahrer: MitFahrer) {
         mitFahrerDao.insertMitFahrer(mitFahrer)
