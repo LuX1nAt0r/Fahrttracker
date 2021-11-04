@@ -1,5 +1,6 @@
 package com.llprdctn.fahrttracker.ui.drives
 
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -22,6 +23,8 @@ class DrivesFragment: Fragment(R.layout.fragment_drives) {
     private val driveViewModel: DriveViewModel by viewModels()
     private var allDrives: List<Drive> = emptyList()
     private lateinit var driveAdapter: DriversAdapter
+    private var isCvShown = true
+    private lateinit var currentlySelectedDate: String
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -35,17 +38,31 @@ class DrivesFragment: Fragment(R.layout.fragment_drives) {
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
-        val date = "$day.$month.$year"
-        updateRecyclerView(date)
+        currentlySelectedDate = "$day.$month.$year"
+        updateRecyclerView(currentlySelectedDate)
 
 
         //ToDO: Create dots in calendarView when there is a drive
 
         calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
-            val selectedDate = "$dayOfMonth.$month.$year"
-            updateRecyclerView(selectedDate)
+            currentlySelectedDate = "$dayOfMonth.$month.$year"
+            updateRecyclerView(currentlySelectedDate)
             }
 
+        tvShowAll.setOnClickListener {
+            if (isCvShown) {
+                calendarView.visibility = View.GONE
+                driveAdapter.drives = allDrives
+                tvShowAll.text = "Select date"
+                isCvShown = false
+
+            } else {
+                calendarView.visibility = View.VISIBLE
+                updateRecyclerView(currentlySelectedDate)
+                tvShowAll.text = "Show all"
+                isCvShown = true
+            }
+        }
 
 
 
