@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
+import com.google.android.material.snackbar.Snackbar
 import com.llprdctn.fahrttracker.R
 import com.llprdctn.fahrttracker.data.entities.Drive
 import dagger.hilt.android.AndroidEntryPoint
@@ -13,7 +15,7 @@ import kotlinx.android.synthetic.main.fragment_add_edit_drive.*
 import java.util.*
 
 @AndroidEntryPoint
-class FragmentAddEditDrive: Fragment(R.layout.fragment_add_edit_drive) {
+class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
 
     private val viewModel: AddEditDriveViewModel by viewModels()
 
@@ -53,6 +55,12 @@ class FragmentAddEditDrive: Fragment(R.layout.fragment_add_edit_drive) {
 
 
             viewModel.addDrive(drive)
+            Snackbar.make(
+                requireView(),
+                "Successfully saved Drive!",
+                Snackbar.LENGTH_SHORT
+            ).show()
+            findNavController().popBackStack()
 
         }
 

@@ -8,11 +8,11 @@
     <fragment
         tools:layout="@layout/fragment_add_edit_drive"
         android:id="@+id/fragmentAddEditDrive"
-        android:name="com.llprdctn.fahrttracker.ui.addEditDrive.FragmentAddEditDrive"
+        android:name="com.llprdctn.fahrttracker.ui.addEditDrive.AddEditDriveFragment"
         android:label="FragmentAddEditDrive" />
     <fragment
         android:id="@+id/fragmentAddEditMitfahrer"
-        android:name="com.llprdctn.fahrttracker.ui.addEditMitfahrer.FragmentAddEditMitfahrer"
+        android:name="com.llprdctn.fahrttracker.ui.addEditMitfahrer.AddEditMitfahrerFragment"
         android:label="FragmentAddEditMitfahrer"
         tools:layout="@layout/fragment_add_edit_mitfahrer"/>
     <fragment
