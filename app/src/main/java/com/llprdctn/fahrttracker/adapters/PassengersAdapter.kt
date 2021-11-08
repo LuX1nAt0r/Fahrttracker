@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.llprdctn.fahrttracker.R
 import com.llprdctn.fahrttracker.data.entities.MitFahrer
 import kotlinx.android.synthetic.main.row_passengers.view.*
+import timber.log.Timber
 
 class PassengersAdapter(): RecyclerView.Adapter<PassengersAdapter.PassengersViewHolder>() {
 
@@ -51,7 +52,7 @@ class PassengersAdapter(): RecyclerView.Adapter<PassengersAdapter.PassengersView
             tvPassengerRides.text = passenger.rides.toString()
         }
 
-        setOnItemClickListener {
+        holder.itemView.setOnClickListener {
             onItemClickListener?.let { click ->
                 click(passenger)
             }

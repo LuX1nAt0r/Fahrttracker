@@ -6,15 +6,15 @@
     app:startDestination="@id/homeFragment">
 
     <fragment
-        tools:layout="@layout/fragment_add_edit_drive"
         android:id="@+id/fragmentAddEditDrive"
         android:name="com.llprdctn.fahrttracker.ui.addEditDrive.AddEditDriveFragment"
-        android:label="FragmentAddEditDrive" />
+        android:label="FragmentAddEditDrive"
+        tools:layout="@layout/fragment_add_edit_drive" />
     <fragment
         android:id="@+id/fragmentAddEditMitfahrer"
         android:name="com.llprdctn.fahrttracker.ui.addEditMitfahrer.AddEditMitfahrerFragment"
         android:label="FragmentAddEditMitfahrer"
-        tools:layout="@layout/fragment_add_edit_mitfahrer"/>
+        tools:layout="@layout/fragment_add_edit_mitfahrer" />
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.llprdctn.fahrttracker.ui.add.AddFragment"
@@ -30,9 +30,34 @@
     <fragment
         android:id="@+id/drivesFragment"
         android:name="com.llprdctn.fahrttracker.ui.drives.DrivesFragment"
-        android:label="DrivesFragment" />
+        android:label="DrivesFragment"
+        tools:layout="@layout/fragment_drives"/>
     <fragment
         android:id="@+id/passengersFragment"
         android:name="com.llprdctn.fahrttracker.ui.passengers.PassengersFragment"
-        android:label="PassengersFragment" /><action android:id="@+id/action_global_passengersFragment" app:destination="@id/passengersFragment"/><action android:id="@+id/action_global_drivesFragment" app:destination="@id/drivesFragment"/><action android:id="@+id/action_global_homeFragment" app:destination="@id/homeFragment"/>
+        android:label="PassengersFragment"
+        tools:layout="@layout/fragement_passengers">
+        <action
+            android:id="@+id/action_passengersFragment_to_passengerDetailsFragment"
+            app:destination="@id/passengerDetailsFragment" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_passengersFragment"
+        app:destination="@id/passengersFragment" />
+    <action
+        android:id="@+id/action_global_drivesFragment"
+        app:destination="@id/drivesFragment" />
+    <action
+        android:id="@+id/action_global_homeFragment"
+        app:destination="@id/homeFragment" />
+
+    <fragment
+        android:id="@+id/passengerDetailsFragment"
+        android:name="com.llprdctn.fahrttracker.ui.detailsPassengers.PassengerDetailsFragment"
+        android:label="PassengerDetailsFragment"
+        tools:layout="@layout/fragement_passengers" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </fragment>
 </navigation>
