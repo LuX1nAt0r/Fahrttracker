@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.llprdctn.fahrttracker.R
@@ -29,11 +30,11 @@ class PassengersFragment: Fragment(R.layout.fragement_passengers) {
         updateRecyclerView()
 
         passengersAdapter.setOnItemClickListener {
-            Snackbar.make(
-                requireView(),
-                "${it.name}",
-                Snackbar.LENGTH_SHORT
-            ).show()
+            if (it.id != null) {
+                val action = PassengersFragmentDirections
+                    .actionPassengersFragmentToPassengerDetailsFragment(it.id)
+                findNavController().navigate(action)
+            }
         }
 
     }

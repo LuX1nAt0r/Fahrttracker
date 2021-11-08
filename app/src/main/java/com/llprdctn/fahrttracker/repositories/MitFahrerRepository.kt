@@ -19,5 +19,9 @@ class MitFahrerRepository @Inject constructor(
         mitFahrerDao.deleteMitFahrer(mitFahrer)
     }
 
+    suspend fun getPassengerById(id: Int): MitFahrer? {
+        return mitFahrerDao.getMitFahrerByID(id)
+    }
+
 
 }

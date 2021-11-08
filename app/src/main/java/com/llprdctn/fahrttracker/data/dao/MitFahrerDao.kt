@@ -19,6 +19,6 @@ interface MitFahrerDao {
     @Query("SELECT * FROM mitFahrer")
     fun getAllMitFahrer(): LiveData<List<MitFahrer>>
 
-    //@Query("SELECT * FROM mitFahrer WHERE id = :id")
-    //suspend fun getMitFahrerByID(id: Int)
+    @Query("SELECT * FROM mitFahrer WHERE id = :id")
+    suspend fun getMitFahrerByID(id: Int) : MitFahrer?
 }
