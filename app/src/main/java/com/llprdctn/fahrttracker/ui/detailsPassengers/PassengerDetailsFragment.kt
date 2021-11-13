@@ -23,9 +23,7 @@ class PassengerDetailsFragment: Fragment(R.layout.fragment_passenger_details) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (args.id != null) {
-            viewModel.getPassengerById(args.id)
-        }
+        viewModel.getPassengerById(args.id)
         Timber.i(viewModel.currentPassenger?.name)
     }
 }
