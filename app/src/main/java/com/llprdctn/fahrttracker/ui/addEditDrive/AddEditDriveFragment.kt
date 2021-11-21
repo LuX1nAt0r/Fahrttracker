@@ -13,31 +13,41 @@ import com.llprdctn.fahrttracker.data.entities.Drive
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_add_edit_drive.*
 import java.util.*
+import androidx.lifecycle.Observer
+import com.llprdctn.fahrttracker.data.entities.MitFahrer
+import timber.log.Timber
 
 @AndroidEntryPoint
 class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
 
-    private val viewModel: AddEditDriveViewModel by viewModels()
+    private val addEditDriveViewModel: AddEditDriveViewModel by viewModels()
+
 
     private val c = Calendar.getInstance()
     private val year = c.get(Calendar.YEAR)
     private val month = c.get(Calendar.MONTH)
     private val dayOfMonth = c.get(Calendar.DAY_OF_MONTH)
 
+    private var allPassengers: MutableList<MitFahrer> = mutableListOf()
+
     //Just for testing
-    private val names = arrayOf("Luisa", "Lukas")
+    //private val names = arrayOf("Luisa", "Lukas")
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        subscribeToObservers()
+
         hinFahrt.isChecked = true
         val currentDate = "$dayOfMonth.$month.$year"
         tvTest.text = currentDate
+
+        //OnClick DatePickerDialog
         tvTest.setOnClickListener {
             showDatePickerDialog()
         }
 
-        createChips()
+
 
 
 
@@ -49,17 +59,31 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
             val date = tvTest.text.toString()
             val checkedNames = getCheckedNames()
             val hinRueckFahrt = if (hinFahrt.isChecked) "HinFahrt" else "RueckFahrt"
+            val checkedNamesArray: MutableList<String> = mutableListOf()
+
+            for (i in checkedNames.indices) {
+                checkedNamesArray.add(i, checkedNames[i].name)
+                val mitFahrer = MitFahrer(
+                    checkedNames[i].id,
+                    checkedNames[i].name,
+                    checkedNames[i].rides+1)
+                addEditDriveViewModel.updatePassengers(mitFahrer)
+            }
 
 
-            val drive = Drive(hinRueckFahrt,date, checkedNames,null)
+            val drive = Drive(hinRueckFahrt,date, checkedNamesArray,null)
 
 
-            viewModel.addDrive(drive)
+            addEditDriveViewModel.addDrive(drive)
             Snackbar.make(
                 requireView(),
                 "Successfully saved Drive!",
                 Snackbar.LENGTH_SHORT
             ).show()
+
+
+
+
             findNavController().popBackStack()
 
         }
@@ -68,13 +92,28 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
 
     }
 
-    private fun getCheckedNames(): List<String> {
+    private fun subscribeToObservers() {
+        //Get All Passengers and Update the Chips
+        addEditDriveViewModel.allPassengers.observe(viewLifecycleOwner, {
+            allPassengers = it.toMutableList()
+            val namesArray: MutableList<String> = mutableListOf()
+            for (i in 0 until it.size) {
+                namesArray.add(i, it[i].name)
+            }
+            createChips(namesArray.toTypedArray())
+            Timber.i(allPassengers.toString())
+        })
+    }
+
+    private fun getCheckedNames(): List<MitFahrer> {
         val checkedIDs = cgMitFahrer.checkedChipIds
-        val mitFahrer: MutableList<String> = mutableListOf()
+        val mitFahrer: MutableList<MitFahrer> = mutableListOf()
 
         for (i in 0 until checkedIDs.size) {
-            mitFahrer.add(names[checkedIDs[i]-1])
+            mitFahrer.add(allPassengers[checkedIDs[i]-1])
+
         }
+        Timber.i(mitFahrer.toString())
         return mitFahrer.toList()
     }
 
@@ -91,7 +130,7 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
         ).show()
     }
 
-    private fun createChips(){
+    private fun createChips(names: Array<String>){
         names.forEach {
             cgMitFahrer.addView(Chip(requireContext()).apply {
                 id = View.generateViewId()

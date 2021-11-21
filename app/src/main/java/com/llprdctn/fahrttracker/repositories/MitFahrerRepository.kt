@@ -23,5 +23,9 @@ class MitFahrerRepository @Inject constructor(
         return mitFahrerDao.getMitFahrerByID(id)
     }
 
+    suspend fun updatePassenger(passenger: MitFahrer) {
+        mitFahrerDao.updateMitFahrer(passenger)
+    }
+
 
 }

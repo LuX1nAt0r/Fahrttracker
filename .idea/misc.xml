@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Programming/AndroidStudio/Fahrttracker/app/src/main/res/layout/fragment_add_edit_drive.xml" value="0.5" />
         <entry key="..\:/Users/lland/AndroidStudioProjects/Fahrttracker/app/src/main/res/layout/activity_main.xml" value="0.152" />
         <entry key="..\:/Users/lland/AndroidStudioProjects/Fahrttracker/app/src/main/res/layout/fragement_passengers.xml" value="0.23867753623188406" />
         <entry key="..\:/Users/lland/AndroidStudioProjects/Fahrttracker/app/src/main/res/layout/fragment_add_edit_drive.xml" value="0.264" />

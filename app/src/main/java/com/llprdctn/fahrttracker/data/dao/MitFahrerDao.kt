@@ -1,10 +1,8 @@
 package com.llprdctn.fahrttracker.data.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
+import androidx.room.OnConflictStrategy.REPLACE
 import com.llprdctn.fahrttracker.data.entities.MitFahrer
 
 @Dao
@@ -21,4 +19,7 @@ interface MitFahrerDao {
 
     @Query("SELECT * FROM mitFahrer WHERE id = :id")
     suspend fun getMitFahrerByID(id: Int) : MitFahrer?
+
+    @Update(onConflict = REPLACE)
+    suspend fun updateMitFahrer(mitFahrer: MitFahrer)
 }
