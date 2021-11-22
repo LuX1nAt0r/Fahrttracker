@@ -24,4 +24,10 @@
         android:enabled="true"
         android:icon="@drawable/ic_people_24"
         android:title="Passengers"/>
+
+    <item
+        android:id="@+id/itSettings"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_settings_24"
+        android:title="Settings"/>
 </menu>

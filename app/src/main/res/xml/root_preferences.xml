@@ -1,11 +1,14 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory app:title="@string/messages_header">
 
         <EditTextPreference
-            app:key="signature"
-            app:title="@string/signature_title"
-            app:useSimpleSummaryProvider="true" />
+            app:key="carFuel"
+            app:title="Fuel usage in L/km"
+            app:useSimpleSummaryProvider="true"
+            app:defaultValue="5,0"
+            />
 
         <ListPreference
             app:defaultValue="reply"
@@ -15,7 +18,24 @@
             app:title="@string/reply_title"
             app:useSimpleSummaryProvider="true" />
 
+        <SeekBarPreference
+            android:title="Fuel usage in L/km"
+            app:min="1"
+            android:max="100"
+            android:defaultValue="40"
+            app:showSeekBarValue="true"
+            />
+
+
+
+
+
+
+
+
+
     </PreferenceCategory>
+
 
     <PreferenceCategory app:title="@string/sync_header">
 
