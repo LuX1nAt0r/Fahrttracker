@@ -63,5 +63,10 @@
     <fragment
         android:id="@+id/statisticsFragment"
         android:name="com.llprdctn.fahrttracker.ui.statistics.StatisticsFragment"
-        android:label="StatisticsFragment" /><action android:id="@+id/action_global_statisticsFragment" app:destination="@id/statisticsFragment"/>
+        android:label="StatisticsFragment" />
+    <action android:id="@+id/action_global_statisticsFragment" app:destination="@id/statisticsFragment" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.llprdctn.fahrttracker.ui.settings.SettingsFragment"
+        android:label="SettingsFragment" /><action android:id="@+id/action_global_settingsFragment" app:destination="@id/settingsFragment"/>
 </navigation>

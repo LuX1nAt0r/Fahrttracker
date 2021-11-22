@@ -20,6 +20,20 @@ class MainActivity : AppCompatActivity() {
 
         bottom_navigation.selectedItemId = R.id.itAdd
 
+        topAppBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.itSettings -> {
+                    NavHostFragment.findNavController(navHostFragment).navigate(
+                        R.id.action_global_settingsFragment
+                    )
+                    topAppBar.title = "Settings"
+                    true
+                }
+                else -> false
+            }
+
+        }
+
 
         bottom_navigation.setOnItemSelectedListener {
             when(it.itemId) {
