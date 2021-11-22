@@ -24,7 +24,13 @@ class DrivesFragment: Fragment(R.layout.fragment_drives) {
     private var allDrives: List<Drive> = emptyList()
     private lateinit var driveAdapter: DriversAdapter
     private var isCvShown = true
-    private lateinit var currentlySelectedDate: String
+
+
+    private val c = Calendar.getInstance()
+    private val year = c.get(Calendar.YEAR)
+    private val month = c.get(Calendar.MONTH)
+    private val day = c.get(Calendar.DAY_OF_MONTH)
+    private var currentlySelectedDate = "$day.$month.$year"
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -34,14 +40,6 @@ class DrivesFragment: Fragment(R.layout.fragment_drives) {
         setupRecyclerView()
 
 
-        val c = Calendar.getInstance()
-        val year = c.get(Calendar.YEAR)
-        val month = c.get(Calendar.MONTH)
-        val day = c.get(Calendar.DAY_OF_MONTH)
-        currentlySelectedDate = "$day.$month.$year"
-        updateRecyclerView(currentlySelectedDate)
-
-
         //ToDO: Create dots in calendarView when there is a drive
 
         calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
@@ -49,6 +47,7 @@ class DrivesFragment: Fragment(R.layout.fragment_drives) {
             updateRecyclerView(currentlySelectedDate)
             }
 
+        //Switch between all drives and selectable
         tvShowAll.setOnClickListener {
             if (isCvShown) {
                 calendarView.visibility = View.GONE
@@ -80,6 +79,9 @@ class DrivesFragment: Fragment(R.layout.fragment_drives) {
     private fun subscribeToObservers(){
         driveViewModel.allDrives.observe(viewLifecycleOwner, Observer {
             allDrives = it
+
+
+            updateRecyclerView(currentlySelectedDate)
         })
     }
 

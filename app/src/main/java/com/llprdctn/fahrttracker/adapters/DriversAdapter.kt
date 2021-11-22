@@ -45,7 +45,7 @@ class DriversAdapter(): RecyclerView.Adapter<DriversAdapter.DriversViewHolder>()
     override fun onBindViewHolder(holder: DriversViewHolder, position: Int) {
         val drive = drives[position]
         holder.itemView.apply {
-            tvDriveMitFahrer.text = drive.mitDriver.toString()
+            tvDriveMitFahrer.text = drive.mitDriver.toString().drop(1).dropLast(1)
             tvHinRueckFahrt.text = drive.hinRueckFahrt
         }
 
