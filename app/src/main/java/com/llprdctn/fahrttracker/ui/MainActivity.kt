@@ -23,6 +23,11 @@ class MainActivity : AppCompatActivity() {
 
         bottom_navigation.setOnItemSelectedListener {
             when(it.itemId) {
+                R.id.itStatistics -> {
+                    NavHostFragment.findNavController(navHostFragment).navigate(
+                        R.id.action_global_statisticsFragment
+                    )
+                }
                 R.id.itAdd -> {
                     NavHostFragment.findNavController(navHostFragment).navigate(
                         R.id.action_global_homeFragment

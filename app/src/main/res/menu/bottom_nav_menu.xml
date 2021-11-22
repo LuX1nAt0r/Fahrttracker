@@ -2,6 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/itStatistics"
+        android:enabled="true"
+        android:icon="@drawable/ic_ine_chart"
+        android:title="Statistics"/>
+
+    <item
         android:id="@+id/itDriveRV"
         android:enabled="true"
         android:icon="@drawable/ic_car_24"
