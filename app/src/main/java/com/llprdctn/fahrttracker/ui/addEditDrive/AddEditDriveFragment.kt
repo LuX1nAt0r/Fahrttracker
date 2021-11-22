@@ -22,25 +22,19 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
 
     private val addEditDriveViewModel: AddEditDriveViewModel by viewModels()
 
-
     private val c = Calendar.getInstance()
     private val year = c.get(Calendar.YEAR)
     private val month = c.get(Calendar.MONTH)
     private val dayOfMonth = c.get(Calendar.DAY_OF_MONTH)
-
     private var allPassengers: MutableList<MitFahrer> = mutableListOf()
 
-    //Just for testing
-    //private val names = arrayOf("Luisa", "Lukas")
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         subscribeToObservers()
 
-        hinFahrt.isChecked = true
-        val currentDate = "$dayOfMonth.$month.$year"
-        tvTest.text = currentDate
+
 
         //OnClick DatePickerDialog
         tvTest.setOnClickListener {
@@ -62,7 +56,9 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
             val checkedNamesArray: MutableList<String> = mutableListOf()
 
             for (i in checkedNames.indices) {
+                //Add checkedNames
                 checkedNamesArray.add(i, checkedNames[i].name)
+                //Update Passenger
                 val mitFahrer = MitFahrer(
                     checkedNames[i].id,
                     checkedNames[i].name,
@@ -70,9 +66,8 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
                 addEditDriveViewModel.updatePassengers(mitFahrer)
             }
 
-
+            //Adding Driver
             val drive = Drive(hinRueckFahrt,date, checkedNamesArray,null)
-
 
             addEditDriveViewModel.addDrive(drive)
             Snackbar.make(
@@ -81,9 +76,7 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
                 Snackbar.LENGTH_SHORT
             ).show()
 
-
-
-
+            //Navigate to home
             findNavController().popBackStack()
 
         }
@@ -96,49 +89,56 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
         //Get All Passengers and Update the Chips
         addEditDriveViewModel.allPassengers.observe(viewLifecycleOwner, {
             allPassengers = it.toMutableList()
-            val namesArray: MutableList<String> = mutableListOf()
-            for (i in 0 until it.size) {
-                namesArray.add(i, it[i].name)
+
+            //Create ChipMenu
+            if (allPassengers.isNotEmpty()) {
+                createChips(allPassengers)
             }
-            createChips(namesArray.toTypedArray())
-            Timber.i(allPassengers.toString())
         })
     }
+
 
     private fun getCheckedNames(): List<MitFahrer> {
         val checkedIDs = cgMitFahrer.checkedChipIds
         val mitFahrer: MutableList<MitFahrer> = mutableListOf()
 
         for (i in 0 until checkedIDs.size) {
-            mitFahrer.add(allPassengers[checkedIDs[i]-1])
+            allPassengers.find { it.id == checkedIDs[i] }?.let { mitFahrer.add(it) }
 
         }
-        Timber.i(mitFahrer.toString())
         return mitFahrer.toList()
     }
 
+
+
+    //Generate DatePicker
     private fun showDatePickerDialog() {
         DatePickerDialog(requireContext(),
             { _, year, month, dayOfMonth ->
                 //OnDateSetListener
                 val selectedDate = "$dayOfMonth.$month.$year"
                 tvTest.text = selectedDate
-            },
-            year,
-            month,
-            dayOfMonth
+            }, year, month, dayOfMonth
         ).show()
     }
 
-    private fun createChips(names: Array<String>){
-        names.forEach {
+    //Generate Chips for the passengers
+    private fun createChips(passengers: List<MitFahrer>){
+        passengers.forEach {
             cgMitFahrer.addView(Chip(requireContext()).apply {
-                id = View.generateViewId()
-                text = it
+                id = it.id!!
+                text = it.name
                 isCheckable = true
-
             })
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        //Initialize layout
+        hinFahrt.isChecked = true
+        val currentDate = "$dayOfMonth.$month.$year"
+        tvTest.text = currentDate
     }
 
 
