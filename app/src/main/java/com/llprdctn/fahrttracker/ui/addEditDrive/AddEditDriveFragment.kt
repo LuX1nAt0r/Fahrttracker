@@ -24,7 +24,7 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
 
     private val c = Calendar.getInstance()
     private val year = c.get(Calendar.YEAR)
-    private val month = c.get(Calendar.MONTH)
+    private val month = c.get(Calendar.MONTH)+1
     private val dayOfMonth = c.get(Calendar.DAY_OF_MONTH)
     private var allPassengers: MutableList<MitFahrer> = mutableListOf()
 
@@ -33,6 +33,7 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         subscribeToObservers()
+
 
 
 
