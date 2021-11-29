@@ -13,6 +13,7 @@ import com.llprdctn.fahrttracker.other.Constants.FUEL_USAGE_PER_KM
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_statistics.*
 import timber.log.Timber
+import java.sql.Timestamp
 import java.util.*
 
 @AndroidEntryPoint
@@ -37,16 +38,15 @@ class StatisticsFragment: Fragment(R.layout.fragment_statistics) {
             tvDrivesCount.text = it.size.toString()
             tvtotalDistanceCount.text = (it.size * DISTANCE).toString() + "km"
             val price = ((it.size * DISTANCE).toFloat() * FUEL_USAGE_PER_KM * FUEL_PRICE)
-
-            tvMoneyCount.text = "%.2f".format(price)+ " €"
-            val string = "21.9.2190"
-            val test = string.find { it == "."[0] }
-            Timber.i(test.toString())
+            tvMoneyCount.text = "%.2f".format(price) + " €"
 
 
-            //val mothlyDrives = it.filter {  }
+            val monthlyDrives = it.filter { drive ->
+                val driveMonth = drive.date.dropLast(5)
+                driveMonth.endsWith(month.toString(), false)
+            }
+            tvMonthlyDistanceCount.text = (monthlyDrives.size * DISTANCE).toString() + "km"
 
-            //tvMonthlyDistanceCount.text = it.filter { it.date. }
         })
     }
 }
