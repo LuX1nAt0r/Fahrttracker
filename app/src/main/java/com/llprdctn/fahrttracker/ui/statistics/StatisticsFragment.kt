@@ -21,7 +21,7 @@ class StatisticsFragment: Fragment(R.layout.fragment_statistics) {
     private val viewModel: StatisticsViewModel by viewModels()
     private var allDrives: MutableList<Drive> = mutableListOf()
     private val c = Calendar.getInstance()
-    private val month = c.get(Calendar.MONTH)
+    private val month = c.get(Calendar.MONTH)+1
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
