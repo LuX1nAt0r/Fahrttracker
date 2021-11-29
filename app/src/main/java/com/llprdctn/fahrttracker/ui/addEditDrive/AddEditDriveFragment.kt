@@ -24,7 +24,7 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
 
     private val c = Calendar.getInstance()
     private val year = c.get(Calendar.YEAR)
-    private val month = c.get(Calendar.MONTH)+1
+    private val month = c.get(Calendar.MONTH)
     private val dayOfMonth = c.get(Calendar.DAY_OF_MONTH)
     private var allPassengers: MutableList<MitFahrer> = mutableListOf()
 
@@ -138,7 +138,7 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
         super.onResume()
         //Initialize layout
         hinFahrt.isChecked = true
-        val currentDate = "$dayOfMonth.$month.$year"
+        val currentDate = "$dayOfMonth.${month+1}.$year"
         tvTest.text = currentDate
     }
 
