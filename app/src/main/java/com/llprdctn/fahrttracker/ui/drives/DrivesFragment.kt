@@ -51,12 +51,14 @@ class DrivesFragment: Fragment(R.layout.fragment_drives) {
         tvShowAll.setOnClickListener {
             if (isCvShown) {
                 calendarView.visibility = View.GONE
+                driveAdapter.showDate = true
                 driveAdapter.drives = allDrives
                 tvShowAll.text = "Select date"
                 isCvShown = false
 
             } else {
                 calendarView.visibility = View.VISIBLE
+                driveAdapter.showDate = false
                 updateRecyclerView(currentlySelectedDate)
                 tvShowAll.text = "Show all"
                 isCvShown = true

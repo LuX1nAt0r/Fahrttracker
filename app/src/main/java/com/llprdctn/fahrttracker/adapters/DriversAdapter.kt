@@ -20,7 +20,8 @@ class DriversAdapter(): RecyclerView.Adapter<DriversAdapter.DriversViewHolder>()
         }
 
         override fun areContentsTheSame(oldItem: Drive, newItem: Drive): Boolean {
-            return oldItem.hashCode() == newItem.hashCode()
+            //return oldItem.hashCode() == newItem.hashCode()
+            return false
         }
     }
 
@@ -31,6 +32,8 @@ class DriversAdapter(): RecyclerView.Adapter<DriversAdapter.DriversViewHolder>()
     var drives: List<Drive>
         get() = differ.currentList
         set(value) = differ.submitList(value)
+
+    var showDate = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DriversViewHolder {
         return DriversViewHolder(
@@ -45,8 +48,11 @@ class DriversAdapter(): RecyclerView.Adapter<DriversAdapter.DriversViewHolder>()
     override fun onBindViewHolder(holder: DriversViewHolder, position: Int) {
         val drive = drives[position]
         holder.itemView.apply {
-            tvDriveMitFahrer.text = drive.mitDriver.toString().drop(1).dropLast(1)
+            tvDriveMitFahrer.text = if(drive.mitDriver.isNotEmpty()) drive.mitDriver.toString().drop(1).dropLast(1) else "Keiner"
             tvHinRueckFahrt.text = drive.hinRueckFahrt
+            if (showDate){
+                tvDriveDate.text = drive.date
+            } else tvDriveDate.text = null
         }
 
         setOnItemClickListener {
