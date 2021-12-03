@@ -1,5 +1,6 @@
 package com.llprdctn.fahrttracker.ui.statistics
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -10,6 +11,7 @@ import com.llprdctn.fahrttracker.data.entities.Drive
 import com.llprdctn.fahrttracker.other.Constants.DISTANCE
 import com.llprdctn.fahrttracker.other.Constants.FUEL_PRICE
 import com.llprdctn.fahrttracker.other.Constants.FUEL_USAGE_PER_KM
+import com.llprdctn.fahrttracker.other.NotificationHandler
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_statistics.*
 import timber.log.Timber
@@ -29,6 +31,30 @@ class StatisticsFragment: Fragment(R.layout.fragment_statistics) {
         super.onViewCreated(view, savedInstanceState)
 
         subscribeToObservers()
+
+
+
+        //Testing purpose
+
+
+        button.setOnClickListener {
+            val intent = Intent(requireActivity(), NotificationHandler::class.java)
+            startActivity(intent)
+
+
+        }
+
+
+        //Testing end
+
+
+
+
+
+
+
+
+
 
     }
 
