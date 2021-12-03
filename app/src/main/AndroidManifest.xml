@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.llprdctn.fahrttracker">
 
+
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+
     <application
         android:name=".FahrtTrackerApplication"
         android:allowBackup="true"
@@ -10,6 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Fahrttracker">
+
+        <receiver android:name=".other.Notification"
+            android:enabled="true"/>
+
         <activity
             android:name=".ui.MainActivity"
             android:exported="true">
@@ -20,10 +27,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".other.NotificationHandler"
-            android:exported="true">
 
-        </activity>
     </application>
 
 </manifest>
