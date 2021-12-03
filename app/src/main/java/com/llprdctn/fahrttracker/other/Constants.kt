@@ -3,6 +3,8 @@ package com.llprdctn.fahrttracker.other
 object Constants {
 
     const val DATABASE_NAME = "fahrtTracker_db"
+    const val NOTIFICATION_ID = "fahrttracker"
+    const val CHANNEL_ID = "fahrttracker"
 
     const val SHARED_PREFERENCES = "sharedPreferencesFahrttracker"
 

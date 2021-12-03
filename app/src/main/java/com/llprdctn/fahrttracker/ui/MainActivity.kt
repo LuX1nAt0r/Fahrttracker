@@ -2,10 +2,12 @@ package com.llprdctn.fahrttracker.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
 import androidx.navigation.fragment.NavHostFragment
 import com.llprdctn.fahrttracker.R
+import com.llprdctn.fahrttracker.other.Constants.CHANNEL_ID
 import com.llprdctn.fahrttracker.ui.add.AddFragment
 import com.llprdctn.fahrttracker.ui.drives.DrivesFragment
 import com.llprdctn.fahrttracker.ui.passengers.PassengersFragment
@@ -19,6 +21,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         bottom_navigation.selectedItemId = R.id.itAdd
+
+
+
+        var builder = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setContentText("Fahrt Tracker")
+            .setContentText("Füge fahrt hinzu")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
 
 
