@@ -13,9 +13,7 @@ import com.llprdctn.fahrttracker.data.entities.Drive
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_add_edit_drive.*
 import java.util.*
-import androidx.lifecycle.Observer
 import com.llprdctn.fahrttracker.data.entities.MitFahrer
-import timber.log.Timber
 
 @AndroidEntryPoint
 class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
@@ -28,17 +26,20 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
     private val dayOfMonth = c.get(Calendar.DAY_OF_MONTH)
     private var allPassengers: MutableList<MitFahrer> = mutableListOf()
 
+    private var selectedMonth = month
+    private var selectedDay = dayOfMonth
+    private var selectedYear = year
+
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         subscribeToObservers()
-
-
+        updateDateTextView()
 
 
         //OnClick DatePickerDialog
-        tvTest.setOnClickListener {
+        tvDate.setOnClickListener {
             showDatePickerDialog()
         }
 
@@ -51,7 +52,7 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
 
         fabSaveFahrt.setOnClickListener {
 
-            val date = tvTest.text.toString()
+            val date = "$selectedDay.$selectedMonth.$selectedYear"
             val checkedNames = getCheckedNames()
             val hinRueckFahrt = if (hinFahrt.isChecked) "HinFahrt" else "RueckFahrt"
             val checkedNamesArray: MutableList<String> = mutableListOf()
@@ -117,8 +118,12 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
         DatePickerDialog(requireContext(),
             { _, year, month, dayOfMonth ->
                 //OnDateSetListener
-                val selectedDate = "$dayOfMonth.$month.$year"
-                tvTest.text = selectedDate
+                //val selectedDate = "$dayOfMonth.$month.$year"
+                selectedDay = dayOfMonth
+                selectedMonth = month
+                selectedYear = year
+                updateDateTextView()
+                //tvTest.text = selectedDate
             }, year, month, dayOfMonth
         ).show()
     }
@@ -134,12 +139,18 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
         }
     }
 
+
+    private fun updateDateTextView() {
+        val date = "$selectedDay.${selectedMonth+1}.$selectedYear"
+        tvDate.text = date
+    }
+
     override fun onResume() {
         super.onResume()
         //Initialize layout
         hinFahrt.isChecked = true
         val currentDate = "$dayOfMonth.${month+1}.$year"
-        tvTest.text = currentDate
+        tvDate.text = currentDate
     }
 
 
