@@ -175,7 +175,7 @@ class MainActivity : AppCompatActivity() {
         var setYear = year
 
         //Check if in range between monday and thursday
-        if (weekDay in 1..4) {
+        if (weekDay in 1..5) {
             //Check if current day isn't last day of month
             if (day != maxDay) {
                 setDay = day+1
@@ -193,14 +193,54 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            calendar.set(setYear, setMonth, setDay, 18, 0)
+
+        }else {
+            when (weekDay) {
+                //Friday
+                6 -> {
+                    for (i in 1..3) {
+                        if (setDay != maxDay){
+                            setDay++
+                        } else{
+                            setDay=1
+                            if (setMonth != maxMonth) {
+                                setMonth++
+                            } else {
+                                setYear++
+                                setMonth = 0
+                            }
+                        }
+                    }
+
+                }
+                //Saturday
+                7 -> {
+                    for (i in 1..2) {
+                        if (setDay != maxDay){
+                            setDay++
+                        } else{
+                            setDay=1
+                            if (setMonth != maxMonth) {
+                                setMonth++
+                            } else {
+                                setYear++
+                                setMonth = 0
+                            }
+                        }
+                    }
+
+                }
+
+            }
         }
+        calendar.set(setYear, setMonth, setDay, 18, 0)
 
         //Save Timestamp of the next notification in sharedPref
         sharedPref.edit().putLong(
             SHARED_PREF_LAST_NOTIFICATION_TIME,
             calendar.timeInMillis
         ).apply()
+
 
 
         return calendar.timeInMillis
