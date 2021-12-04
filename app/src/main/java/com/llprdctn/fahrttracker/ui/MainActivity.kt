@@ -4,14 +4,8 @@ import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.core.app.NotificationChannelCompat
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentContainerView
 import androidx.navigation.fragment.NavHostFragment
 import com.llprdctn.fahrttracker.R
 import com.llprdctn.fahrttracker.other.Constants.CHANNEL_ID
@@ -20,13 +14,8 @@ import com.llprdctn.fahrttracker.other.Constants.NOTIFICATION_ID
 import com.llprdctn.fahrttracker.other.Constants.SHARED_PREF_LAST_NOTIFICATION_TIME
 import com.llprdctn.fahrttracker.other.Constants.TITLE_EXTRA
 import com.llprdctn.fahrttracker.other.Notification
-import com.llprdctn.fahrttracker.ui.add.AddFragment
-import com.llprdctn.fahrttracker.ui.drives.DrivesFragment
-import com.llprdctn.fahrttracker.ui.passengers.PassengersFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
-import timber.log.Timber
-import java.sql.Time
 import java.util.*
 
 @AndroidEntryPoint
