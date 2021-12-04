@@ -42,35 +42,18 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        sharedPref = getPreferences(android.content.Context.MODE_PRIVATE)
+        sharedPref = getPreferences(Context.MODE_PRIVATE)
 
         bottom_navigation.selectedItemId = R.id.itAdd
 
         val nextNotification = sharedPref.getLong(SHARED_PREF_LAST_NOTIFICATION_TIME, 0)
         val calendar = Calendar.getInstance()
 
-        Timber.i("Next Notification: ${nextNotification.toString()}")
 
-        if (nextNotification < calendar.timeInMillis) {
+        if (nextNotification < calendar.timeInMillis && showNotifications) {
             createNotificationChannel()
             scheduleNotification()
         }
-
-
-
-        val month = calendar.get(Calendar.MONTH)
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
-        val year = calendar.get(Calendar.YEAR)
-        val hour = calendar.get(Calendar.HOUR)
-        val minute = calendar.get(Calendar.MINUTE)
-
-        Timber.i("$year, $month, $day, $hour, $minute")
-
-
-
-
-
-
 
 
         bottom_navigation.setOnItemSelectedListener {
@@ -133,33 +116,9 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    /*private fun showAlert(time: Long, title: String, message: String) {
-
-        val date = Date(time)
-        val dateFormat = android.text.format.DateFormat.getLongDateFormat(applicationContext)
-        val timeFormat = android.text.format.DateFormat.getTimeFormat(applicationContext)
-
-        AlertDialog.Builder(this)
-            .setTitle("Notification")
-            .setMessage("Message")
-            .setPositiveButton("Okay"){_,_ ->}
-            .show()
-    }*/
 
     private fun getTime(): Long {
 
-        /*val minute = 16
-        val hour = 17
-        val day = 4
-        val month = 11
-        val year = 2021
-
-        val calender = Calendar.getInstance()
-        Timber.i(calender.timeInMillis.toString())
-        calender.set(year, month, day, hour, minute)
-        Timber.i(calender.timeInMillis.toString())
-        return calender.timeInMillis
-*/
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
@@ -170,11 +129,12 @@ class MainActivity : AppCompatActivity() {
         val maxDay = calendar.getMaximum(Calendar.DAY_OF_MONTH)
         val maxMonth = calendar.getMaximum(Calendar.MONTH)
 
+        //Variables for the date of the next notification
         var setDay = day
         var setMonth = month
         var setYear = year
 
-        //Check if in range between monday and thursday
+        //Check if in range between sunday and thursday
         if (weekDay in 1..5) {
             //Check if current day isn't last day of month
             if (day != maxDay) {
@@ -192,9 +152,9 @@ class MainActivity : AppCompatActivity() {
                     setYear = year+1
                 }
             }
-
-
-        }else {
+        }
+        //Else it is Friday or Saturday
+        else {
             when (weekDay) {
                 //Friday
                 6 -> {
@@ -233,6 +193,7 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
+        //Set the calender variable to the next Notification time
         calendar.set(setYear, setMonth, setDay, 18, 0)
 
         //Save Timestamp of the next notification in sharedPref
@@ -244,8 +205,6 @@ class MainActivity : AppCompatActivity() {
 
 
         return calendar.timeInMillis
-
-
     }
 
 
