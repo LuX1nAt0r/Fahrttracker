@@ -17,20 +17,22 @@ import com.llprdctn.fahrttracker.ui.MainActivity
 class Notification: BroadcastReceiver() {
 
 
+
+
     override fun onReceive(context: Context, intent: Intent) {
 
         //Notification Intent, On Notification click
-       /* val intent = Intent(context, MainActivity::class.java).apply {
+        val intent = Intent(context, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         val pendingIntentNotification: PendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
-*/
+
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle(intent.getStringExtra(TITLE_EXTRA))
             .setContentText(intent.getStringExtra(MESSAGE_EXTRA))
-//            .setContentIntent(pendingIntentNotification)
-//            .setAutoCancel(true)
+            .setContentIntent(pendingIntentNotification)
+            .setAutoCancel(true)
             .build()
 
         val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

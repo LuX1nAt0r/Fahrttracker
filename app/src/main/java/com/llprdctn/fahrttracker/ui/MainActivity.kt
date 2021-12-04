@@ -29,11 +29,6 @@ import java.util.*
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    override fun onStart() {
-        super.onStart()
-        scheduleNotification()
-    }
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +39,7 @@ class MainActivity : AppCompatActivity() {
 
 
         createNotificationChannel()
+        scheduleNotification()
 
 
         val calendar = Calendar.getInstance()
@@ -137,14 +133,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun getTime(): Long {
 
-        val minute = 19
-        val hour = 9
-        val day = 3
+        val minute = 50
+        val hour = 16
+        val day = 4
         val month = 11
         val year = 2021
 
         val calender = Calendar.getInstance()
+        Timber.i(calender.timeInMillis.toString())
         calender.set(year, month, day, hour, minute)
+        Timber.i(calender.timeInMillis.toString())
         return calender.timeInMillis
 
 
