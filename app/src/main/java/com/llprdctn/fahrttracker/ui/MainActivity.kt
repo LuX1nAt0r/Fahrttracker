@@ -3,6 +3,7 @@ package com.llprdctn.fahrttracker.ui
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -16,6 +17,7 @@ import com.llprdctn.fahrttracker.R
 import com.llprdctn.fahrttracker.other.Constants.CHANNEL_ID
 import com.llprdctn.fahrttracker.other.Constants.MESSAGE_EXTRA
 import com.llprdctn.fahrttracker.other.Constants.NOTIFICATION_ID
+import com.llprdctn.fahrttracker.other.Constants.SHARED_PREF_LAST_NOTIFICATION_TIME
 import com.llprdctn.fahrttracker.other.Constants.TITLE_EXTRA
 import com.llprdctn.fahrttracker.other.Notification
 import com.llprdctn.fahrttracker.ui.add.AddFragment
@@ -24,25 +26,38 @@ import com.llprdctn.fahrttracker.ui.passengers.PassengersFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
+import java.sql.Time
 import java.util.*
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    //TODO: Create a settingsoption to cancel notifications
+    private val showNotifications = true
+    private lateinit var sharedPref: SharedPreferences
+
 
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        sharedPref = getPreferences(android.content.Context.MODE_PRIVATE)
 
         bottom_navigation.selectedItemId = R.id.itAdd
 
-
-        createNotificationChannel()
-        scheduleNotification()
-
-
+        val nextNotification = sharedPref.getLong(SHARED_PREF_LAST_NOTIFICATION_TIME, 0)
         val calendar = Calendar.getInstance()
+
+        Timber.i("Next Notification: ${nextNotification.toString()}")
+
+        if (nextNotification < calendar.timeInMillis) {
+            createNotificationChannel()
+            scheduleNotification()
+        }
+
+
+
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
         val year = calendar.get(Calendar.YEAR)
@@ -133,8 +148,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun getTime(): Long {
 
-        val minute = 50
-        val hour = 16
+        /*val minute = 16
+        val hour = 17
         val day = 4
         val month = 11
         val year = 2021
@@ -144,6 +159,51 @@ class MainActivity : AppCompatActivity() {
         calender.set(year, month, day, hour, minute)
         Timber.i(calender.timeInMillis.toString())
         return calender.timeInMillis
+*/
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val weekDay = calendar.get(Calendar.DAY_OF_WEEK)
+
+        //Get maximums of Day and Month
+        val maxDay = calendar.getMaximum(Calendar.DAY_OF_MONTH)
+        val maxMonth = calendar.getMaximum(Calendar.MONTH)
+
+        var setDay = day
+        var setMonth = month
+        var setYear = year
+
+        //Check if in range between monday and thursday
+        if (weekDay in 1..4) {
+            //Check if current day isn't last day of month
+            if (day != maxDay) {
+                setDay = day+1
+            } else {
+                setDay = 1
+                //Check if current month isn't last month
+                if (month != maxMonth) {
+                    //Isn't last month
+                    setMonth = month+1
+                }
+                else {
+                    //Is last month
+                    setMonth = 0
+                    setYear = year+1
+                }
+            }
+
+            calendar.set(setYear, setMonth, setDay, 18, 0)
+        }
+
+        //Save Timestamp of the next notification in sharedPref
+        sharedPref.edit().putLong(
+            SHARED_PREF_LAST_NOTIFICATION_TIME,
+            calendar.timeInMillis
+        ).apply()
+
+
+        return calendar.timeInMillis
 
 
     }

@@ -32,7 +32,7 @@ class Notification: BroadcastReceiver() {
             .setContentTitle(intent.getStringExtra(TITLE_EXTRA))
             .setContentText(intent.getStringExtra(MESSAGE_EXTRA))
             .setContentIntent(pendingIntentNotification)
-            .setAutoCancel(true)
+
             .build()
 
         val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
