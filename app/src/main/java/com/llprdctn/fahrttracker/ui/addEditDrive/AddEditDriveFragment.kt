@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.google.android.material.snackbar.Snackbar
 import com.llprdctn.fahrttracker.R
 import com.llprdctn.fahrttracker.data.entities.Drive
@@ -44,6 +45,18 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
         }
 
 
+
+        cgHinRueckFahrt.setOnCheckedChangeListener(ChipGroup.OnCheckedChangeListener { group, checkedId ->
+            if (cgHinRueckFahrt.checkedChipIds.size == 2) {
+                tvHinfahrt.visibility = View.VISIBLE
+                tvRueckFahrt.visibility = View.VISIBLE
+                cgHinRueckFahrt.visibility = View.VISIBLE
+            } else {
+                tvHinfahrt.visibility = View.INVISIBLE
+                tvRueckFahrt.visibility = View.INVISIBLE
+                cgHinRueckFahrt.visibility = View.INVISIBLE
+            }
+        })
 
 
 
@@ -131,13 +144,24 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
     //Generate Chips for the passengers
     private fun createChips(passengers: List<MitFahrer>){
         passengers.forEach {
+            //Create First ChipGroup
             cgMitFahrer.addView(Chip(requireContext()).apply {
                 id = it.id!!
                 text = it.name
                 isCheckable = true
             })
+
+            //Create second ChipGroup which shows when hin and rueckFahrt are selected
+            cgMitFahrerRF.addView(Chip(requireContext()).apply {
+                id = it.id!!
+                text = it.name
+                isCheckable = true
+            })
         }
+
     }
+
+
 
 
     private fun updateDateTextView() {
