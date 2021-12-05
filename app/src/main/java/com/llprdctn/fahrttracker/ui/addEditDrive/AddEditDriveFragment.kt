@@ -85,10 +85,22 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
         fabSaveFahrt.setOnClickListener {
 
             val date = "$selectedDay.$selectedMonth.$selectedYear"
-            val checkedNames = getCheckedNames()
+            var checkedNames: List<MitFahrer> = listOf()
+            var checkedNamesWhenBothChecked: List<MitFahrer> = listOf()
             val hinRueckFahrt = if (hinFahrt.isChecked) "HinFahrt" else "RueckFahrt"
             val checkedNamesArray: MutableList<String> = mutableListOf()
+            val checkedNamesWhenBothCheckedArray: MutableList<String> = mutableListOf()
 
+
+            if(isHinFahrtChecked && isRueckFahrtChecked) {
+                checkedNames = getCheckedNamesFirstChipGroup()
+                checkedNamesWhenBothChecked = getCheckedNamesSecondChipGroup()
+            } else {
+                checkedNames = getCheckedNamesFirstChipGroup()
+            }
+
+
+            //Loop through the selected Names of the first ChipGroup
             for (i in checkedNames.indices) {
                 //Add checkedNames
                 checkedNamesArray.add(i, checkedNames[i].name)
@@ -100,10 +112,39 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
                 addEditDriveViewModel.updatePassengers(mitFahrer)
             }
 
+            //Loop through the selected Names of the second ChipGroup
+            for (i in checkedNamesWhenBothChecked.indices) {
+                //Add checkedNames
+                checkedNamesWhenBothCheckedArray.add(i, checkedNamesWhenBothChecked[i].name)
+                //Update Passenger
+                val mitFahrer = MitFahrer(
+                    checkedNamesWhenBothChecked[i].id,
+                    checkedNamesWhenBothChecked[i].name,
+                    checkedNamesWhenBothChecked[i].rides+1
+                )
+                addEditDriveViewModel.updatePassengers(mitFahrer)
+            }
+
+
             //Adding Driver
             val drive = Drive(hinRueckFahrt,date, checkedNamesArray,null)
 
             addEditDriveViewModel.addDrive(drive)
+
+            if (isHinFahrtChecked && isRueckFahrtChecked) {
+                val secondDrive = Drive(
+        "RueckFahrt",
+                    date,
+                    checkedNamesWhenBothCheckedArray,
+                    null
+                    )
+                addEditDriveViewModel.addDrive(secondDrive)
+            }
+
+
+
+
+
             Snackbar.make(
                 requireView(),
                 "Successfully saved Drive!",
@@ -132,13 +173,24 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
     }
 
 
-    private fun getCheckedNames(): List<MitFahrer> {
+    private fun getCheckedNamesFirstChipGroup(): List<MitFahrer> {
         val checkedIDs = cgMitFahrer.checkedChipIds
         val mitFahrer: MutableList<MitFahrer> = mutableListOf()
 
         for (i in 0 until checkedIDs.size) {
             allPassengers.find { it.id == checkedIDs[i] }?.let { mitFahrer.add(it) }
 
+        }
+        return mitFahrer.toList()
+    }
+
+
+    private fun getCheckedNamesSecondChipGroup(): List<MitFahrer> {
+        val checkedIDs = cgMitFahrerRF.checkedChipIds
+        val mitFahrer: MutableList<MitFahrer> = mutableListOf()
+
+        for (i in 0 until checkedIDs.size) {
+            allPassengers.find { it.id == checkedIDs[i] }?.let { mitFahrer.add(it)  }
         }
         return mitFahrer.toList()
     }
