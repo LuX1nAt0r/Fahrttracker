@@ -21,19 +21,22 @@ import java.sql.Time
 @AndroidEntryPoint
 class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
 
+    //ViewModel
     private val addEditDriveViewModel: AddEditDriveViewModel by viewModels()
 
+    //Current date
     private val c = Calendar.getInstance()
     private val year = c.get(Calendar.YEAR)
     private val month = c.get(Calendar.MONTH)
     private val dayOfMonth = c.get(Calendar.DAY_OF_MONTH)
     private var allPassengers: MutableList<MitFahrer> = mutableListOf()
 
+    //Selected date
     private var selectedMonth = month
     private var selectedDay = dayOfMonth
     private var selectedYear = year
 
-
+    //Selected Chips Hin- and RueckFahrt
     private var isHinFahrtChecked = false
     private var isRueckFahrtChecked = false
 
@@ -46,31 +49,16 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
 
 
         //OnClick DatePickerDialog
-        tvDate.setOnClickListener {
-            showDatePickerDialog()
-        }
+        tvDate.setOnClickListener { showDatePickerDialog() }
 
 
-        Timber.i("ChipGroup")
-        cgHinRueckFahrt.setOnCheckedChangeListener { group, checkedId ->
-            Timber.i("ChipGroup has changed")
-            if (cgHinRueckFahrt.checkedChipIds.size == 2) {
-                tvHinfahrt.visibility = View.VISIBLE
-                tvRueckFahrt.visibility = View.VISIBLE
-                cgHinRueckFahrt.visibility = View.VISIBLE
-            } else {
-                tvHinfahrt.visibility = View.INVISIBLE
-                tvRueckFahrt.visibility = View.INVISIBLE
-                cgHinRueckFahrt.visibility = View.INVISIBLE
-            }
-        }
-
-
+        //Chip HinFahrt changeListener
         hinFahrt.setOnCheckedChangeListener { buttonView, isChecked ->
             isHinFahrtChecked = isChecked
             updateChipGroupVisibility()
         }
 
+        //Chip RueckFahrt changeListener
         rueckFahrt.setOnCheckedChangeListener { buttonView, isChecked ->
             isRueckFahrtChecked = isChecked
             updateChipGroupVisibility()
@@ -78,25 +66,25 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
 
 
 
-
-
-
-
+        //Saving behavior
         fabSaveFahrt.setOnClickListener {
 
             val date = "$selectedDay.$selectedMonth.$selectedYear"
-            var checkedNames: List<MitFahrer> = listOf()
-            var checkedNamesWhenBothChecked: List<MitFahrer> = listOf()
+            val checkedNames: List<MitFahrer>
+            val checkedNamesWhenBothChecked: List<MitFahrer>
             val hinRueckFahrt = if (hinFahrt.isChecked) "HinFahrt" else "RueckFahrt"
             val checkedNamesArray: MutableList<String> = mutableListOf()
             val checkedNamesWhenBothCheckedArray: MutableList<String> = mutableListOf()
 
 
             if(isHinFahrtChecked && isRueckFahrtChecked) {
+                //Both chips are checked
                 checkedNames = getCheckedNamesFirstChipGroup()
                 checkedNamesWhenBothChecked = getCheckedNamesSecondChipGroup()
             } else {
+                //Only one chip is checked
                 checkedNames = getCheckedNamesFirstChipGroup()
+                checkedNamesWhenBothChecked = emptyList()
             }
 
 
@@ -128,9 +116,9 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
 
             //Adding Driver
             val drive = Drive(hinRueckFahrt,date, checkedNamesArray,null)
-
             addEditDriveViewModel.addDrive(drive)
 
+            //Adding second Drive if both are selected
             if (isHinFahrtChecked && isRueckFahrtChecked) {
                 val secondDrive = Drive(
         "RueckFahrt",
@@ -140,8 +128,6 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
                     )
                 addEditDriveViewModel.addDrive(secondDrive)
             }
-
-
 
 
 
@@ -176,7 +162,6 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
     private fun getCheckedNamesFirstChipGroup(): List<MitFahrer> {
         val checkedIDs = cgMitFahrer.checkedChipIds
         val mitFahrer: MutableList<MitFahrer> = mutableListOf()
-
         for (i in 0 until checkedIDs.size) {
             allPassengers.find { it.id == checkedIDs[i] }?.let { mitFahrer.add(it) }
 
@@ -188,7 +173,6 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
     private fun getCheckedNamesSecondChipGroup(): List<MitFahrer> {
         val checkedIDs = cgMitFahrerRF.checkedChipIds
         val mitFahrer: MutableList<MitFahrer> = mutableListOf()
-
         for (i in 0 until checkedIDs.size) {
             allPassengers.find { it.id == checkedIDs[i] }?.let { mitFahrer.add(it)  }
         }
@@ -244,16 +228,6 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
             tvRueckFahrt.visibility = View.INVISIBLE
             cgMitFahrerRF.visibility = View.INVISIBLE
         }
-
-        /*if (cgHinRueckFahrt.checkedChipIds.size == 2) {
-            tvHinfahrt.visibility = View.VISIBLE
-            tvRueckFahrt.visibility = View.VISIBLE
-            cgHinRueckFahrt.visibility = View.VISIBLE
-        } else {
-            tvHinfahrt.visibility = View.INVISIBLE
-            tvRueckFahrt.visibility = View.INVISIBLE
-            cgHinRueckFahrt.visibility = View.INVISIBLE
-        }*/
     }
 
 
