@@ -15,6 +15,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_add_edit_drive.*
 import java.util.*
 import com.llprdctn.fahrttracker.data.entities.MitFahrer
+import timber.log.Timber
+import java.sql.Time
 
 @AndroidEntryPoint
 class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
@@ -32,6 +34,10 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
     private var selectedYear = year
 
 
+    private var isHinFahrtChecked = false
+    private var isRueckFahrtChecked = false
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -45,8 +51,9 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
         }
 
 
-
-        cgHinRueckFahrt.setOnCheckedChangeListener(ChipGroup.OnCheckedChangeListener { group, checkedId ->
+        Timber.i("ChipGroup")
+        cgHinRueckFahrt.setOnCheckedChangeListener { group, checkedId ->
+            Timber.i("ChipGroup has changed")
             if (cgHinRueckFahrt.checkedChipIds.size == 2) {
                 tvHinfahrt.visibility = View.VISIBLE
                 tvRueckFahrt.visibility = View.VISIBLE
@@ -56,7 +63,19 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
                 tvRueckFahrt.visibility = View.INVISIBLE
                 cgHinRueckFahrt.visibility = View.INVISIBLE
             }
-        })
+        }
+
+
+        hinFahrt.setOnCheckedChangeListener { buttonView, isChecked ->
+            isHinFahrtChecked = isChecked
+            updateChipGroupVisibility()
+        }
+
+        rueckFahrt.setOnCheckedChangeListener { buttonView, isChecked ->
+            isRueckFahrtChecked = isChecked
+            updateChipGroupVisibility()
+        }
+
 
 
 
@@ -161,6 +180,30 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
 
     }
 
+    //Update the visibility of the ChipGroup if hin and rueckFahrt changes
+    private fun updateChipGroupVisibility() {
+
+        if (isHinFahrtChecked && isRueckFahrtChecked){
+            tvHinfahrt.visibility = View.VISIBLE
+            tvRueckFahrt.visibility = View.VISIBLE
+            cgMitFahrerRF.visibility = View.VISIBLE
+        } else {
+            tvHinfahrt.visibility = View.INVISIBLE
+            tvRueckFahrt.visibility = View.INVISIBLE
+            cgMitFahrerRF.visibility = View.INVISIBLE
+        }
+
+        /*if (cgHinRueckFahrt.checkedChipIds.size == 2) {
+            tvHinfahrt.visibility = View.VISIBLE
+            tvRueckFahrt.visibility = View.VISIBLE
+            cgHinRueckFahrt.visibility = View.VISIBLE
+        } else {
+            tvHinfahrt.visibility = View.INVISIBLE
+            tvRueckFahrt.visibility = View.INVISIBLE
+            cgHinRueckFahrt.visibility = View.INVISIBLE
+        }*/
+    }
+
 
 
 
@@ -173,6 +216,7 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
         super.onResume()
         //Initialize layout
         hinFahrt.isChecked = true
+        isHinFahrtChecked = true
         val currentDate = "$dayOfMonth.${month+1}.$year"
         tvDate.text = currentDate
     }
