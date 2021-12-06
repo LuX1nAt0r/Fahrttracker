@@ -53,13 +53,13 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
 
 
         //Chip HinFahrt changeListener
-        hinFahrt.setOnCheckedChangeListener { buttonView, isChecked ->
+        hinFahrt.setOnCheckedChangeListener { _, isChecked ->
             isHinFahrtChecked = isChecked
             updateChipGroupVisibility()
         }
 
         //Chip RueckFahrt changeListener
-        rueckFahrt.setOnCheckedChangeListener { buttonView, isChecked ->
+        rueckFahrt.setOnCheckedChangeListener { _, isChecked ->
             isRueckFahrtChecked = isChecked
             updateChipGroupVisibility()
         }
@@ -70,13 +70,13 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
         fabSaveFahrt.setOnClickListener {
 
             val date = "$selectedDay.$selectedMonth.$selectedYear"
-            val checkedNames: List<MitFahrer>
-            val checkedNamesWhenBothChecked: List<MitFahrer>
+            val checkedNames: List<MitFahrer> = getCheckedNamesFirstChipGroup()
+            val checkedNamesWhenBothChecked: List<MitFahrer> = getCheckedNamesSecondChipGroup()
             val hinRueckFahrt = if (hinFahrt.isChecked) "HinFahrt" else "RueckFahrt"
             val checkedNamesArray: MutableList<String> = mutableListOf()
             val checkedNamesWhenBothCheckedArray: MutableList<String> = mutableListOf()
 
-
+/*
             if(isHinFahrtChecked && isRueckFahrtChecked) {
                 //Both chips are checked
                 checkedNames = getCheckedNamesFirstChipGroup()
@@ -85,7 +85,41 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
                 //Only one chip is checked
                 checkedNames = getCheckedNamesFirstChipGroup()
                 checkedNamesWhenBothChecked = emptyList()
+            }*/
+
+
+            val allPassengersToUpdate: MutableList<MitFahrer> = getCheckedNamesFirstChipGroup().toMutableList()
+            //checkedNamesWhenBothChecked = getCheckedNamesSecondChipGroup()
+
+            for (i in checkedNamesWhenBothChecked.indices) {
+                val passenger = checkedNamesWhenBothChecked[i]
+
+
+                val samePassenger = allPassengersToUpdate.indexOfFirst { it.id == passenger.id }
+                if (samePassenger != -1) {
+
+                    allPassengersToUpdate[samePassenger] = MitFahrer(
+                        passenger.id,
+                        passenger.name,
+                        passenger.rides+1)
+                } else {
+                    allPassengersToUpdate.add(passenger)
+                }
             }
+
+
+            for (i in allPassengersToUpdate.indices) {
+                val passenger = allPassengersToUpdate[i]
+                //Update Passenger
+                val mitFahrer = MitFahrer(
+                    passenger.id,
+                    passenger.name,
+                    passenger.rides+1)
+                addEditDriveViewModel.updatePassengers(mitFahrer)
+            }
+
+
+
 
 
             //Loop through the selected Names of the first ChipGroup
@@ -93,25 +127,32 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
                 //Add checkedNames
                 checkedNamesArray.add(i, checkedNames[i].name)
                 //Update Passenger
-                val mitFahrer = MitFahrer(
+                /*val mitFahrer = MitFahrer(
                     checkedNames[i].id,
                     checkedNames[i].name,
                     checkedNames[i].rides+1)
-                addEditDriveViewModel.updatePassengers(mitFahrer)
+                addEditDriveViewModel.updatePassengers(mitFahrer)*/
             }
 
-            //Loop through the selected Names of the second ChipGroup
-            for (i in checkedNamesWhenBothChecked.indices) {
-                //Add checkedNames
-                checkedNamesWhenBothCheckedArray.add(i, checkedNamesWhenBothChecked[i].name)
-                //Update Passenger
-                val mitFahrer = MitFahrer(
-                    checkedNamesWhenBothChecked[i].id,
-                    checkedNamesWhenBothChecked[i].name,
-                    checkedNamesWhenBothChecked[i].rides+1
-                )
-                addEditDriveViewModel.updatePassengers(mitFahrer)
+            if(isHinFahrtChecked && isRueckFahrtChecked) {
+                //Both chips are checked
+
+                //Loop through the selected Names of the second ChipGroup
+                for (i in checkedNamesWhenBothChecked.indices) {
+                    //Add checkedNames
+                    checkedNamesWhenBothCheckedArray.add(i, checkedNamesWhenBothChecked[i].name)
+                    //Update Passenger
+                    /*val mitFahrer = MitFahrer(
+                        checkedNamesWhenBothChecked[i].id,
+                        checkedNamesWhenBothChecked[i].name,
+                        checkedNamesWhenBothChecked[i].rides+1
+                    )
+                    addEditDriveViewModel.updatePassengers(mitFahrer)*/
+                }
             }
+
+
+
 
 
             //Adding Driver
