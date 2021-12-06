@@ -77,39 +77,8 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
             val checkedNamesWhenBothCheckedArray: MutableList<String> = mutableListOf()
 
 
-            //List of all Passengers of both chipGroups
-            val allPassengersToUpdate: MutableList<MitFahrer> = checkedNames.toMutableList()
 
-            //Loop through the second chipGroup
-            for (i in checkedNamesWhenBothChecked.indices) {
-                //Instance of current passenger
-                val passenger = checkedNamesWhenBothChecked[i]
-                //Check if passenger is already in the list
-                val samePassenger = allPassengersToUpdate.indexOfFirst { it.id == passenger.id }
-
-                if (samePassenger != -1) {
-                    //Passenger is already in the list and gets updated
-                    allPassengersToUpdate[samePassenger] = MitFahrer(
-                        passenger.id,
-                        passenger.name,
-                        passenger.rides+1)
-                } else {
-                    //Passenger isn't in the list and gets added
-                    allPassengersToUpdate.add(passenger)
-                }
-            }
-
-            //Loop through allPassengers that are selected
-            for (i in allPassengersToUpdate.indices) {
-                //Instance of current passenger
-                val passenger = allPassengersToUpdate[i]
-                //Update Passenger
-                val mitFahrer = MitFahrer(
-                    passenger.id,
-                    passenger.name,
-                    passenger.rides+1)
-                addEditDriveViewModel.updatePassengers(mitFahrer)
-            }
+            updateAllSelectedPassengers(checkedNames, checkedNamesWhenBothChecked)
 
 
 
@@ -185,6 +154,40 @@ class AddEditDriveFragment: Fragment(R.layout.fragment_add_edit_drive) {
     private fun updateAllSelectedPassengers(
         checkedNames: List<MitFahrer>,
         checkedNamesWhenBothChecked: List<MitFahrer>) {
+
+        //List of all Passengers of both chipGroups
+        val allPassengersToUpdate: MutableList<MitFahrer> = checkedNames.toMutableList()
+
+        //Loop through the second chipGroup
+        for (i in checkedNamesWhenBothChecked.indices) {
+            //Instance of current passenger
+            val passenger = checkedNamesWhenBothChecked[i]
+            //Check if passenger is already in the list
+            val samePassenger = allPassengersToUpdate.indexOfFirst { it.id == passenger.id }
+
+            if (samePassenger != -1) {
+                //Passenger is already in the list and gets updated
+                allPassengersToUpdate[samePassenger] = MitFahrer(
+                    passenger.id,
+                    passenger.name,
+                    passenger.rides+1)
+            } else {
+                //Passenger isn't in the list and gets added
+                allPassengersToUpdate.add(passenger)
+            }
+        }
+
+        //Loop through allPassengers that are selected
+        for (i in allPassengersToUpdate.indices) {
+            //Instance of current passenger
+            val passenger = allPassengersToUpdate[i]
+            //Update Passenger
+            val mitFahrer = MitFahrer(
+                passenger.id,
+                passenger.name,
+                passenger.rides+1)
+            addEditDriveViewModel.updatePassengers(mitFahrer)
+        }
 
 
 
