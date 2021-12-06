@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var sharedPref: SharedPreferences
 
 
+    //TODO: Notifications aren't working
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
