@@ -29,10 +29,10 @@ class Notification: BroadcastReceiver() {
 
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle(intent.getStringExtra(TITLE_EXTRA))
-            .setContentText(intent.getStringExtra(MESSAGE_EXTRA))
+            .setContentTitle("Fahrt Tracker")
+            .setContentText("Please add your today's rides")
             .setContentIntent(pendingIntentNotification)
-
+            .setAutoCancel(true)
             .build()
 
         val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

@@ -16,6 +16,7 @@ import com.llprdctn.fahrttracker.other.Constants.TITLE_EXTRA
 import com.llprdctn.fahrttracker.other.Notification
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
+import timber.log.Timber
 import java.util.*
 
 @AndroidEntryPoint
@@ -24,9 +25,12 @@ class MainActivity : AppCompatActivity() {
     //TODO: Create a settingsoption to cancel notifications
     private val showNotifications = true
     private lateinit var sharedPref: SharedPreferences
+    private val calendar: Calendar = Calendar.getInstance()
+    private var nextNotification :Long = 0
 
 
-    //TODO: Notifications aren't working
+
+    //TODO: When on different fragment and the backKey is pressed the bottomBar doesn't change
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,14 +40,14 @@ class MainActivity : AppCompatActivity() {
 
         bottom_navigation.selectedItemId = R.id.itAdd
 
-        val nextNotification = sharedPref.getLong(SHARED_PREF_LAST_NOTIFICATION_TIME, 0)
-        val calendar = Calendar.getInstance()
+        nextNotification = sharedPref.getLong(SHARED_PREF_LAST_NOTIFICATION_TIME, 0)
 
 
-        if (nextNotification < calendar.timeInMillis && showNotifications) {
-            createNotificationChannel()
-            scheduleNotification()
-        }
+        //Notifications
+        createNotificationChannel()
+        scheduleNotification()
+
+
 
 
         bottom_navigation.setOnItemSelectedListener {
@@ -95,12 +99,17 @@ class MainActivity : AppCompatActivity() {
         )
 
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val time = getTime()
+        //val time = getTime()
+        val time = if (nextNotification < calendar.timeInMillis) getTime() else nextNotification
+
+
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
             time,
             pendingIntent
         )
+
+        //alarmManager.setAndAllowWhileIdle()
 
 
 
@@ -184,7 +193,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         //Set the calender variable to the next Notification time
-        calendar.set(setYear, setMonth, setDay, 18, 0)
+        calendar.set(setYear, setMonth, setDay, 18, 0, 0)
 
         //Save Timestamp of the next notification in sharedPref
         sharedPref.edit().putLong(
@@ -199,8 +208,8 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun createNotificationChannel() {
-        val name = "Notifi Channel"
-        val desc = "A Description of the Channel"
+        val name = "Notification Channel"
+        val desc = "Daily reminder"
         val importance = NotificationManager.IMPORTANCE_DEFAULT
         val channel = NotificationChannel(CHANNEL_ID, name, importance)
         channel.description = desc
